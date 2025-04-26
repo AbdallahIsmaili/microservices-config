@@ -2,6 +2,8 @@ server:
   port: 8080
 
 spring:
+  application:
+    name: admin-server
   security:
     user:
       name: ais
@@ -10,7 +12,8 @@ spring:
     admin:
       ui:
         title: Microservices Admin Dashboard
-      context-path: /
+      discovery:
+        enabled: true
 
 management:
   endpoints:
