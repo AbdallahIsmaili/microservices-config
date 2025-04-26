@@ -2,6 +2,8 @@ server:
   port: 8083
 
 spring:
+  application:
+    name: order-service
   datasource:
     url: jdbc:mysql://mysql-db:3306/order_db?createDatabaseIfNotExist=true
     username: root
@@ -10,21 +12,41 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
   boot:
     admin:
       client:
         url: http://admin-server:8080
 
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
+# Feign Client Configuration
+customer:
+  service:
+    url: http://customer-service:8081
+product:
+  service:
+    url: http://product-service:8082
 
 management:
   endpoints:
     web:
       exposure:
-        include: '*'
+        include: "*"
+
+# Resilience4j Configuration
+resilience4j:
+  retry:
+    instances:
+      orderService:
+        maxAttempts: 3
+        waitDuration: 1000ms
+      customerClient:
+        maxAttempts: 3
+        waitDuration: 1500ms
+      productClient:
+        maxAttempts: 3
+        waitDuration: 1500ms
+  circuitbreaker:
+    instances:
+      orderService:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
