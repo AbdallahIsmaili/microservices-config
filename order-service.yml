@@ -18,12 +18,8 @@ spring:
         url: http://admin-server:8080
 
 # Feign Client Configuration
-customer:
-  service:
-    url: http://customer-service:8081
-product:
-  service:
-    url: http://product-service:8082
+customer.service.url: http://customer-service:8081
+product.service.url: http://product-service:8082
 
 management:
   endpoints:
