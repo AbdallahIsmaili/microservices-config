@@ -2,6 +2,8 @@ server:
   port: 8081
 
 spring:
+  application:
+    name: customer-service
   datasource:
     url: jdbc:mysql://mysql-db:3306/customer_db?createDatabaseIfNotExist=true
     username: root
@@ -20,4 +22,20 @@ management:
   endpoints:
     web:
       exposure:
-        include: '*'
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+# Resilience4j Configuration
+resilience4j:
+  retry:
+    instances:
+      customerService:
+        maxAttempts: 3
+        waitDuration: 1000ms
+  circuitbreaker:
+    instances:
+      customerService:
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
